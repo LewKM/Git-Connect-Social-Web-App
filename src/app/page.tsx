@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client';
 
 import Link from 'next/link';
@@ -60,6 +61,78 @@ export default function HomePage() {
                 </div>
             </section>
 
+            {/* Testimonials Section */}
+            <section className="relative z-10 py-16 px-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                <div className="max-w-6xl mx-auto text-center">
+                    <h2 className="text-4xl font-bold mb-10">What Developers Are Saying</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {/* Testimonial 1 */}
+                        <div className="bg-white text-black p-6 rounded-lg shadow-lg">
+                            <p className="italic"> "GitConnect helped me find amazing collaborators for my projects."</p>
+                            <p className="mt-4 font-semibold">- Jane Doe, Full-stack Developer</p>
+                        </div>
+                        {/* Testimonial 2 */}
+                        <div className="bg-white text-black p-6 rounded-lg shadow-lg">
+                            <p className="italic">"I improved my skills by learning from experienced developers!"</p>
+                            <p className="mt-4 font-semibold">- John Smith, Backend Engineer</p>
+                        </div>
+                        {/* Testimonial 3 */}
+                        <div className="bg-white text-black p-6 rounded-lg shadow-lg">
+                            <p className="italic">"A great platform to showcase my work and get feedback."</p>
+                            <p className="mt-4 font-semibold">- Alice Johnson, Frontend Developer</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Pricing Plans Section */}
+            <section className="relative z-10 bg-gray-900 py-16 px-8">
+                <div className="max-w-6xl mx-auto text-center">
+                    <h2 className="text-4xl font-bold mb-10 text-white">Choose Your Plan</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        {/* Free Plan */}
+                        <div className="bg-gray-800 p-8 rounded-lg shadow-lg">
+                            <h3 className="text-2xl font-semibold mb-4 text-blue-500">Free Plan</h3>
+                            <p className="text-gray-400 mb-6">Perfect for beginners and hobbyists.</p>
+                            <ul className="text-gray-400 mb-6">
+                                <li>✅ Collaborate on projects</li>
+                                <li>✅ Access to community</li>
+                                <li>✅ Showcase portfolio</li>
+                            </ul>
+                            <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold transition-transform transform hover:scale-105">
+                                Get Started
+                            </button>
+                        </div>
+                        {/* Pro Plan */}
+                        <div className="bg-gray-800 p-8 rounded-lg shadow-lg">
+                            <h3 className="text-2xl font-semibold mb-4 text-blue-500">Pro Plan</h3>
+                            <p className="text-gray-400 mb-6">For professionals looking to grow their career.</p>
+                            <ul className="text-gray-400 mb-6">
+                                <li>✅ Everything in Free Plan</li>
+                                <li>✅ Advanced collaboration tools</li>
+                                <li>✅ Priority support</li>
+                            </ul>
+                            <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold transition-transform transform hover:scale-105">
+                                Upgrade Now
+                            </button>
+                        </div>
+                        {/* Enterprise Plan */}
+                        <div className="bg-gray-800 p-8 rounded-lg shadow-lg">
+                            <h3 className="text-2xl font-semibold mb-4 text-blue-500">Enterprise Plan</h3>
+                            <p className="text-gray-400 mb-6">Ideal for large teams and organizations.</p>
+                            <ul className="text-gray-400 mb-6">
+                                <li>✅ Everything in Pro Plan</li>
+                                <li>✅ Custom solutions</li>
+                                <li>✅ 24/7 support</li>
+                            </ul>
+                            <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold transition-transform transform hover:scale-105">
+                                Contact Us
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Call to Action Section */}
             <section className="relative z-10 py-20 bg-gradient-to-r from-blue-500 to-purple-600 text-center text-white">
                 <h2 className="text-4xl font-bold mb-6">Ready to Get Started?</h2>
@@ -76,7 +149,7 @@ export default function HomePage() {
             {/* Footer */}
             <footer className="relative z-10 py-10 bg-gray-800 text-center text-gray-400">
                 <p>© 2024 GitConnect. All rights reserved.</p>
-                <p>Made with 💙 by developers, for developers.</p>
+                <p>Made with 💙 by LewKM, for developers.</p>
             </footer>
         </div>
     );
