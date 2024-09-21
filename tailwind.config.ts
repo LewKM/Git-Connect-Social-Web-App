@@ -12,8 +12,12 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      backgroundImage: {
+        'signup-bg': "url('/images/bg1.jpg')", // Your custom background image
+      },
     },
   },
   plugins: [],
 };
+
 export default config;
