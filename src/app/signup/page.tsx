@@ -54,7 +54,7 @@ export default function SignUpPage() {
         <div className="relative min-h-screen bg-signup-bg bg-cover bg-center flex items-center justify-center">
             {/* Overlay */}
             <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-            
+
             <div className="relative z-10 bg-gray-900 bg-opacity-90 shadow-2xl rounded-xl p-8 max-w-lg w-full text-white">
                 {/* Heading */}
                 <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600 text-center mb-8">
@@ -68,86 +68,89 @@ export default function SignUpPage() {
                     </div>
                 )}
 
-                {/* Name Input */}
-                <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">Full Name</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
-                        placeholder="Enter your full name"
-                    />
+                {/* Form Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    {/* Name Input */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Full Name</label>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                            placeholder="Enter your full name"
+                        />
+                    </div>
+
+                    {/* Email Input */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Email Address</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                            placeholder="Enter your email"
+                        />
+                    </div>
+
+                    {/* Password Input */}
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium mb-1">Password</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                            placeholder="Enter a strong password"
+                        />
+                    </div>
+
+                    {/* Location Input */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Location</label>
+                        <input
+                            type="text"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                            placeholder="Enter your location"
+                        />
+                    </div>
+
+                    {/* Website Input */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Website</label>
+                        <input
+                            type="url"
+                            value={website}
+                            onChange={(e) => setWebsite(e.target.value)}
+                            className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                            placeholder="Enter your website URL"
+                        />
+                    </div>
+
+                    {/* GitHub Input */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">GitHub Profile</label>
+                        <input
+                            type="url"
+                            value={github}
+                            onChange={(e) => setGithub(e.target.value)}
+                            className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                            placeholder="Enter your GitHub profile URL"
+                        />
+                    </div>
                 </div>
 
-                {/* Email Input */}
-                <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">Email Address</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
-                        placeholder="Enter your email"
-                    />
-                </div>
-
-                {/* Password Input */}
-                <div className="mb-6">
-                    <label className="block text-sm font-medium mb-1">Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
-                        placeholder="Enter a strong password"
-                    />
-                </div>
-
-                {/* Bio Input */}
-                <div className="mb-4">
+                {/* Bio Input - Spanning two columns */}
+                <div className="md:col-span-2 mb-4">
                     <label className="block text-sm font-medium mb-1">Bio</label>
                     <textarea
                         value={bio}
                         onChange={(e) => setBio(e.target.value)}
                         className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
                         placeholder="Tell us about yourself"
-                    />
-                </div>
-
-                {/* Location Input */}
-                <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">Location</label>
-                    <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
-                        placeholder="Enter your location"
-                    />
-                </div>
-
-                {/* Website Input */}
-                <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">Website</label>
-                    <input
-                        type="url"
-                        value={website}
-                        onChange={(e) => setWebsite(e.target.value)}
-                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
-                        placeholder="Enter your website URL"
-                    />
-                </div>
-
-                {/* GitHub Input */}
-                <div className="mb-6">
-                    <label className="block text-sm font-medium mb-1">GitHub Profile</label>
-                    <input
-                        type="url"
-                        value={github}
-                        onChange={(e) => setGithub(e.target.value)}
-                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
-                        placeholder="Enter your GitHub profile URL"
                     />
                 </div>
 
