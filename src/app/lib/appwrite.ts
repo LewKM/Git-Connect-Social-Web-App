@@ -1,5 +1,5 @@
 // lib/appwrite.ts
-import { Client, Account, Databases, Storage } from 'appwrite';
+import { Client, Account, Databases, Storage, Permission, Role } from 'appwrite';
 
 const client = new Client();
 
@@ -12,4 +12,5 @@ const account = new Account(client);
 const databases = new Databases(client);
 const storage = new Storage(client);
 
-export { client, account, databases, storage };
+// Export the Permission and Role classes
+export { client, account, databases, storage, Permission, Role };

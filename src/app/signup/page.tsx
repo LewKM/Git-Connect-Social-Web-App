@@ -7,6 +7,10 @@ export default function SignUpPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [bio, setBio] = useState('');
+    const [location, setLocation] = useState('');
+    const [website, setWebsite] = useState('');
+    const [github, setGithub] = useState('');
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -20,7 +24,15 @@ export default function SignUpPage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password, name }),
+                body: JSON.stringify({
+                    email,
+                    password,
+                    name,
+                    bio,
+                    location,
+                    website,
+                    github
+                }),
             });
 
             if (!response.ok) {
@@ -29,6 +41,7 @@ export default function SignUpPage() {
 
             const data = await response.json();
             console.log('User signed up:', data);
+            window.alert('User signed up successfully!');
         } catch (error) {
             console.error('Error signing up:', error);
             setErrorMessage('Error signing up. Please try again.');
@@ -91,6 +104,53 @@ export default function SignUpPage() {
                     />
                 </div>
 
+                {/* Bio Input */}
+                <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1">Bio</label>
+                    <textarea
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                        placeholder="Tell us about yourself"
+                    />
+                </div>
+
+                {/* Location Input */}
+                <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1">Location</label>
+                    <input
+                        type="text"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                        placeholder="Enter your location"
+                    />
+                </div>
+
+                {/* Website Input */}
+                <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1">Website</label>
+                    <input
+                        type="url"
+                        value={website}
+                        onChange={(e) => setWebsite(e.target.value)}
+                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                        placeholder="Enter your website URL"
+                    />
+                </div>
+
+                {/* GitHub Input */}
+                <div className="mb-6">
+                    <label className="block text-sm font-medium mb-1">GitHub Profile</label>
+                    <input
+                        type="url"
+                        value={github}
+                        onChange={(e) => setGithub(e.target.value)}
+                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                        placeholder="Enter your GitHub profile URL"
+                    />
+                </div>
+
                 {/* Sign-Up Button */}
                 <div className="flex justify-center">
                     <button
@@ -109,22 +169,6 @@ export default function SignUpPage() {
                         Sign In
                     </Link>
                 </p>
-
-                {/* Social Sign-In Options
-                <div className="mt-8">
-                    <p className="text-center text-gray-400 mb-4">Or sign up with</p>
-                    <div className="flex space-x-4 justify-center">
-                        <button className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full transition-transform transform hover:scale-105">
-                            <i className="fab fa-facebook-f"></i>
-                        </button>
-                        <button className="bg-red-600 hover:bg-red-700 text-white p-3 rounded-full transition-transform transform hover:scale-105">
-                            <i className="fab fa-google"></i>
-                        </button>
-                        <button className="bg-gray-800 hover:bg-gray-900 text-white p-3 rounded-full transition-transform transform hover:scale-105">
-                            <i className="fab fa-github"></i>
-                        </button>
-                    </div>
-                </div> */}
             </div>
         </div>
     );

@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function HomePage() {
     return (
-        <div className="relative min-h-screen bg-signup-bg bg-cover bg-center text-white">
+        <div className="relative min-h-screen bg-signup-bg bg-cover bg-fixed bg-center text-white">
             {/* Overlay for contrast */}
             <div className="absolute inset-0 bg-black bg-opacity-60"></div>
             
@@ -23,9 +23,9 @@ export default function HomePage() {
                             Sign Up Now
                         </button>
                     </Link>
-                    <Link href="/login">
+                    <Link href="/signin">
                         <button className="bg-white text-black px-8 py-4 rounded-full font-semibold transition-transform transform hover:scale-105 hover:shadow-lg">
-                            Log In
+                            Sign In
                         </button>
                     </Link>
                 </div>
