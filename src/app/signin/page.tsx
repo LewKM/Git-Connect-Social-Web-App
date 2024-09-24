@@ -33,7 +33,7 @@ export default function LoginPage() {
             <div className="absolute inset-0 bg-black bg-opacity-60"></div>
             <div className="relative z-10 bg-gray-900 bg-opacity-90 shadow-xl rounded-lg p-8 max-w-md w-full">
                 <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600 text-center mb-6">
-                    Log In
+                    Sign In
                 </h1>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-white-700 mb-1">Email</label>
@@ -41,7 +41,7 @@ export default function LoginPage() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-black"
                         placeholder="Enter your email"
                     />
                 </div>
@@ -51,7 +51,7 @@ export default function LoginPage() {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                        className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-black"
                         placeholder="Enter your password"
                     />
                 </div>
