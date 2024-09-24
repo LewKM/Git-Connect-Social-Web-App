@@ -83,7 +83,7 @@ export default function LandingPage() {
     return (
         <div className="relative min-h-screen bg-signup-bg bg-cover bg-fixed bg-center text-white flex flex-col">
             {/* Overlay for contrast */}
-            <div className="absolute inset-0 bg-black bg-opacity-80"></div>
+            <div className="absolute inset-0 bg-black bg-opacity-95"></div>
 
             {/* Fixed Top Navigation Bar */}
             <nav className="bg-gray-900 shadow-lg sticky top-0 z-50 p-4 text-">
