@@ -9,18 +9,24 @@ export async function POST(req: Request) {
     const { email, password, name, bio, location, website, github } = await req.json();
 
     try {
-        // Step 1: Create the user account
+        // Step 1: Create the user account in Appwrite Users collection
         const accountResponse = await account.create('unique()', email, password, name);
+
+        // Log the account response to make sure the user is created successfully
+        console.log('Account created:', accountResponse);
 
         // Step 2: Store additional profile information in the Developers collection
         const developerId = accountResponse.$id; // Get the unique user ID from the account creation
+
         const developerProfile = {
             developer_id: developerId,     // Foreign key linking this profile to the created user
             name: name,
             bio: bio,
+            email: email,
+            password: password,
             location: location,
             website: website,
-            github: github,
+            github: github
         };
 
         // Insert the developer profile data into the Developers collection
@@ -30,11 +36,14 @@ export async function POST(req: Request) {
             'unique()',          // Unique document ID
             developerProfile,
             [
-                Permission.read(Role.any()),                  // Anyone can read this document
-                Permission.update(Role.user(developerId)),    // Only the developer can update their profile
-                Permission.delete(Role.user(developerId))     // Only the developer can delete their profile
+                Permission.read(Role.any()),  // Only the developer can read their profile
+                Permission.update(Role.any()), // Only the developer can update their profile
+                Permission.delete(Role.any())  // Only the developer can delete their profile
             ]
         );
+
+        // Log the profile response to confirm document creation
+        console.log('Profile created:', profileResponse);
 
         // Return a successful response with both account and profile creation data
         return NextResponse.json({ account: accountResponse, profile: profileResponse }, { status: 201 });

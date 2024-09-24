@@ -11,7 +11,7 @@ export default function LoginPage() {
     const handleLogin = async () => {
         setLoading(true);
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch('/api/signin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
