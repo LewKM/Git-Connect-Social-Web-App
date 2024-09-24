@@ -40,7 +40,7 @@ export default function LandingPage() {
             if (response.documents.length === 0) {
                 setHasMore(false);
             } else {
-                setPosts(prevPosts => [...prevPosts, ...response.documents as Post[]]);
+                setPosts(prevPosts => [...prevPosts, ...response.documents as unknown as Post[]]);
                 setOffset(prevOffset => prevOffset + limit);
             }
         } catch (err) {
@@ -75,7 +75,7 @@ export default function LandingPage() {
     useEffect(() => {
         if (error) {
             setShowError(true);
-            const timer = setTimeout(() => setShowError(false), 3000); // Hide after 3 seconds
+            const timer = setTimeout(() => setShowError(false), 10000); // Hide after 3 seconds
             return () => clearTimeout(timer);
         }
     }, [error]);
@@ -139,7 +139,7 @@ export default function LandingPage() {
 
                 {/* Error Message */}
                 {error && showError && (
-                    <p className={`text-red-600 text-center mt-4 transition-all duration-300 transform ${showError ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+                    <p className={`animate-ping text-red-600 text-center mt-4 transition-all duration-300 transform ${showError ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
                         {error}
                     </p>
                 )}

@@ -20,11 +20,11 @@ export default function HomePage() {
                 <div className="flex space-x-4">
                     <Link href="/signup">
                         <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-full font-semibold transition-transform transform hover:scale-105 hover:shadow-lg">
-                            Sign Up Now
+                            Sign Up
                         </button>
                     </Link>
                     <Link href="/signin">
-                        <button className="bg-white text-black px-8 py-4 rounded-full font-semibold transition-transform transform hover:scale-105 hover:shadow-lg">
+                        <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-full font-semibold transition-transform transform hover:scale-105 hover:shadow-lg">
                             Sign In
                         </button>
                     </Link>
