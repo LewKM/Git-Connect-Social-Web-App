@@ -1,12 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
-'use client';
+'use client'; // Add this line
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Correct import
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const router = useRouter(); // Initialize useRouter
 
     const handleLogin = async () => {
         setLoading(true);
@@ -21,6 +23,15 @@ export default function LoginPage() {
 
             const data = await response.json();
             console.log('User logged in:', data);
+
+            // Check if login was successful
+            if (response.ok) {
+                // Redirect to the dashboard
+                router.push('/dashboard'); // Adjust the path based on your dashboard structure
+            } else {
+                // Handle errors (optional)
+                console.error('Login failed:', data.error);
+            }
         } catch (error) {
             console.error('Error logging in:', error);
         } finally {
