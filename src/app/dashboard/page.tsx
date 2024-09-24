@@ -17,6 +17,7 @@ export default function LandingPage() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [showError, setShowError] = useState<boolean>(false);
     const [limit] = useState<number>(5); // Number of posts per fetch
     const [offset, setOffset] = useState<number>(0); // Offset for pagination
     const [hasMore, setHasMore] = useState<boolean>(true); // Infinite scroll condition
@@ -71,10 +72,18 @@ export default function LandingPage() {
         }
     }, [loading, hasMore]);
 
+    useEffect(() => {
+        if (error) {
+            setShowError(true);
+            const timer = setTimeout(() => setShowError(false), 3000); // Hide after 3 seconds
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
     return (
         <div className="relative min-h-screen bg-signup-bg bg-cover bg-fixed bg-center text-white flex flex-col">
             {/* Overlay for contrast */}
-            <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+            <div className="absolute inset-0 bg-black bg-opacity-80"></div>
 
             {/* Fixed Top Navigation Bar */}
             <nav className="bg-gray-900 shadow-lg sticky top-0 z-50 p-4 text-">
@@ -93,7 +102,7 @@ export default function LandingPage() {
 
             {/* Main Content */}
             <div className="flex-1 max-w-4xl mx-auto p-4 overflow-y-auto mt-16" ref={scrollRef}>
-                <h1 className="text-3xl font-bold mb-6 text-gray-900 text-center relative z-10">
+                <h1 className="text-3xl font-bold mb-6 text-white-900 text-center relative z-10">
                     Latest Posts
                 </h1>
 
@@ -129,7 +138,12 @@ export default function LandingPage() {
                 )}
 
                 {/* Error Message */}
-                {error && <p className="text-red-600 text-center mt-4">{error}</p>}
+                {error && showError && (
+                    <p className={`text-red-600 text-center mt-4 transition-all duration-300 transform ${showError ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+                        {error}
+                    </p>
+                )}
+
             </div>
 
             {/* Fixed Footer */}
