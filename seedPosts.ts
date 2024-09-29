@@ -1,4 +1,4 @@
-import { databases } from '../../src/lib/appwrite'; // Import Appwrite Databases instance
+import { databases } from './src/app/lib/appwrite';
 
 // Sample post data
 const samplePosts = [
