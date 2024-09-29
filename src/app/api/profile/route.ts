@@ -5,8 +5,8 @@ import { ID, Query } from 'appwrite';
 // Appwrite constants
 const DATABASE_ID = '66ee6792001cc251b751';  // Replace with your actual Database ID
 const DEVELOPERS_COLLECTION_ID = '66f125020038b0271d36';  // Replace with your actual Developers Collection ID
-const WORK_EXPERIENCE_COLLECTION_ID = 'your_work_experience_collection_id';  // Replace with your actual Work Experience Collection ID
-const EDUCATION_COLLECTION_ID = 'your_education_collection_id';  // Replace with your actual Education Collection ID
+const WORK_COLLECTION_ID = '66f126d00004b6ae2947';  // Replace with your actual Work Experience Collection ID
+const EDUCATION_COLLECTION_ID = '66f126000029bb8d8f80';  // Replace with your actual Education Collection ID
 
 // Helper function to handle errors
 function handleError(error: unknown) {
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
         const profile = await databases.getDocument(DATABASE_ID, DEVELOPERS_COLLECTION_ID, developerId);
 
         // Fetch work experiences
-        const workExperiences = await databases.listDocuments(DATABASE_ID, WORK_EXPERIENCE_COLLECTION_ID, [
+        const workExperiences = await databases.listDocuments(DATABASE_ID, WORK_COLLECTION_ID, [
             Query.equal('developer_id', developerId)
         ]);
 
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
 
         switch (type) {
             case 'work_experience':
-                response = await databases.createDocument(DATABASE_ID, WORK_EXPERIENCE_COLLECTION_ID, ID.unique(), data, permissions);
+                response = await databases.createDocument(DATABASE_ID, WORK_COLLECTION_ID, ID.unique(), data, permissions);
                 break;
             case 'education':
                 response = await databases.createDocument(DATABASE_ID, EDUCATION_COLLECTION_ID, ID.unique(), data, permissions);
@@ -95,7 +95,7 @@ export async function PUT(req: NextRequest) {
                 response = await databases.updateDocument(DATABASE_ID, DEVELOPERS_COLLECTION_ID, id, data);
                 break;
             case 'work_experience':
-                response = await databases.updateDocument(DATABASE_ID, WORK_EXPERIENCE_COLLECTION_ID, id, data);
+                response = await databases.updateDocument(DATABASE_ID, WORK_COLLECTION_ID, id, data);
                 break;
             case 'education':
                 response = await databases.updateDocument(DATABASE_ID, EDUCATION_COLLECTION_ID, id, data);
@@ -122,7 +122,7 @@ export async function DELETE(req: NextRequest) {
     try {
         switch (type) {
             case 'work_experience':
-                await databases.deleteDocument(DATABASE_ID, WORK_EXPERIENCE_COLLECTION_ID, id);
+                await databases.deleteDocument(DATABASE_ID, WORK_COLLECTION_ID, id);
                 break;
             case 'education':
                 await databases.deleteDocument(DATABASE_ID, EDUCATION_COLLECTION_ID, id);

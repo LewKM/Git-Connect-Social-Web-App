@@ -1,71 +1,82 @@
-    'use client';
+'use client';
 
-    import { useState, useEffect } from 'react';
-    import { databases, account } from '../lib/appwrite';
-    import { FaPlus, FaEdit, FaSave, FaTrash } from 'react-icons/fa';
-    import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { databases, account } from '../lib/appwrite';
+import { Query } from 'appwrite';
+import { FaPlus, FaEdit, FaSave, FaTrash } from 'react-icons/fa';
+import Link from 'next/link';
+import { Url } from 'next/dist/shared/lib/router/router';
 
-    interface Profile {
-    $id: string;
-    name: string;
-    bio: string;
-    github: string;
-    }
+interface Profile {
+$id: string;
+name: string;
+bio: string;
+github: Url;
+website: Url;
+location: string;
+}
 
-    interface Education {
-    $id: string;
-    institution: string;
-    degree: string;
-    year: string;
-    }
+interface Education {
+$id: string;
+institution: string;
+degree: string;
+year: string;
+}
 
-    interface WorkExperience {
-    $id: string;
-    company: string;
-    position: string;
-    years: string;
-    }
+interface WorkExperience {
+$id: string;
+company: string;
+position: string;
+years: string;
+}
 
-    export default function ProfilePage() {
-    const [profile, setProfile] = useState<Profile | null>(null);
-    const [education, setEducation] = useState<Education[]>([]);
-    const [workExperience, setWorkExperience] = useState<WorkExperience[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [showError, setShowError] = useState<boolean>(false);
+export default function ProfilePage() {
+const [profile, setProfile] = useState<Profile | null>(null);
+const [education, setEducation] = useState<Education[]>([]);
+const [workExperience, setWorkExperience] = useState<WorkExperience[]>([]);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState<string | null>(null);
+const [showError, setShowError] = useState<boolean>(false);
+const [isEditingProfile, setIsEditingProfile] = useState(false);
+const [editableProfile, setEditableProfile] = useState<Profile | null>(null);
+const [isAddingEducation, setIsAddingEducation] = useState(false);
+const [newEducation, setNewEducation] = useState<Omit<Education, '$id'>>({ institution: '', degree: '', year: '' })
+const [isAddingWorkExperience, setIsAddingWorkExperience] = useState(false);
+const [newWorkExperience, setNewWorkExperience] = useState<Omit<WorkExperience, '$id'>>({ company: '', position: '', years: '' });
 
-    const [isEditingProfile, setIsEditingProfile] = useState(false);
-    const [editableProfile, setEditableProfile] = useState<Profile | null>(null);
-
-    const [isAddingEducation, setIsAddingEducation] = useState(false);
-    const [newEducation, setNewEducation] = useState<Omit<Education, '$id'>>({ institution: '', degree: '', year: '' });
-
-    const [isAddingWorkExperience, setIsAddingWorkExperience] = useState(false);
-    const [newWorkExperience, setNewWorkExperience] = useState<Omit<WorkExperience, '$id'>>({ company: '', position: '', years: '' });
-
-    const fetchData = async () => {
-        try {
+const fetchData = async () => {
+    try {
         const user = await account.get();
+        const developerId = user.$id;  // Get the developer_id from the user session
+        console.log(user.name);
 
         // Fetch profile data
-        const profileResponse = await databases.getDocument(
-            'databaseId',
-            'profileCollectionId',
-            user.$id
+        const profileResponse = await databases.listDocuments(
+            '66ee6792001cc251b751',
+            '66f125020038b0271d36',
+            [Query.equal('developer_id', developerId)]
         );
 
-        const profile: Profile = {
-            $id: profileResponse.$id,
-            name: profileResponse.name,
-            bio: profileResponse.bio,
-            github: profileResponse.github,
-        };
+        if (profileResponse.documents.length > 0) {
+            const profileDoc = profileResponse.documents[0];
+            const profile: Profile = {
+                $id: profileDoc.$id,
+                name: profileDoc.name,
+                bio: profileDoc.bio,
+                github: profileDoc.github,
+                website: profileDoc.website,
+                location: profileDoc.location,
+            };
+
+            setProfile(profile);
+            setEditableProfile(profile);
+        }
 
         // Fetch education data
         const educationResponse = await databases.listDocuments(
-            'databaseId',
-            'educationCollectionId',
-            []
+            '66ee6792001cc251b751',
+            '66f126000029bb8d8f80',
+            [Query.equal('developer_id', developerId)]
         );
 
         interface EducationDocument {
@@ -75,24 +86,20 @@
             year: string;
         }
 
-        const education: EducationDocument[] = educationResponse.documents.map((doc) => {
-            if ('$id' in doc && 'institution' in doc && 'degree' in doc && 'year' in doc) {
-                return {
-                    $id: doc.$id,
-                    institution: doc.institution,
-                    degree: doc.degree,
-                    year: doc.year,
-                } as EducationDocument;
-            } else {
-                throw new Error(`Invalid document: ${JSON.stringify(doc)}`);
-            }
-        });
+        const education: EducationDocument[] = educationResponse.documents.map((doc) => ({
+            $id: doc.$id,
+            institution: doc.institution,
+            degree: doc.degree,
+            year: doc.year,
+        }));
+
+        setEducation(education);
 
         // Fetch work experience data
         const workExperienceResponse = await databases.listDocuments(
-            'databaseId',
-            'workExperienceCollectionId',
-            []
+            '66ee6792001cc251b751',
+            '66f126d00004b6ae2947',
+            [Query.equal('developer_id', developerId)]
         );
 
         interface WorkExperienceDocument {
@@ -102,123 +109,118 @@
             years: string;
         }
 
-        const workExperience: WorkExperienceDocument[] = workExperienceResponse.documents.map((doc) => {
-            if ('$id' in doc && 'company' in doc && 'position' in doc && 'years' in doc) {
-                return {
-                    $id: doc.$id,
-                    company: doc.company,
-                    position: doc.position,
-                    years: doc.years,
-                } as WorkExperienceDocument;
-            } else {
-                throw new Error(`Invalid document: ${JSON.stringify(doc)}`);
-            }
-        });
+        const workExperience: WorkExperienceDocument[] = workExperienceResponse.documents.map((doc) => ({
+            $id: doc.$id,
+            company: doc.company,
+            position: doc.position,
+            years: doc.years,
+        }));
 
-        setProfile(profile);
-        setEditableProfile(profile);
-        setEducation(education);
         setWorkExperience(workExperience);
-        } catch (error) {
+        
+    } catch (error) {
         setError(`Failed to load profile data: ${error}`);
-        } finally {
+    } finally {
         setLoading(false);
+    }
+};
+
+
+useEffect(() => {
+    fetchData();
+}, []);
+
+const handleEditProfile = () => {
+    setIsEditingProfile(true);
+};
+
+const handleSaveProfile = async () => {
+    if (editableProfile) {
+    try {
+        await databases.updateDocument(
+        '66ee6792001cc251b751',
+        '66f125020038b0271d36',
+        editableProfile.$id,
+        {
+            name: editableProfile.name,
+            bio: editableProfile.bio,
+            github: editableProfile.github,
+            website: editableProfile.website,
+            location: editableProfile.location,
         }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const handleEditProfile = () => {
-        setIsEditingProfile(true);
-    };
-
-    const handleSaveProfile = async () => {
-        if (editableProfile) {
-        try {
-            await databases.updateDocument(
-            'databaseId',
-            'profileCollectionId',
-            editableProfile.$id,
-            {
-                name: editableProfile.name,
-                bio: editableProfile.bio,
-                github: editableProfile.github,
-            }
-            );
-            setProfile(editableProfile);
-            setIsEditingProfile(false);
-        } catch (error) {
-            setError(`Failed to update profile: ${error}`);
-        }
-        }
-    };
-
-    const handleProfileInputChange = (field: keyof Profile, value: string) => {
-        setEditableProfile((prev) => (prev ? { ...prev, [field]: value } : prev));
-    };
-
-    const handleAddEducation = async () => {
-        try {
-        const response = await databases.createDocument(
-            'databaseId',
-            'educationCollectionId',
-            'unique()',
-            newEducation
         );
-        setEducation([...education, { ...newEducation, $id: response.$id }]);
-        setNewEducation({ institution: '', degree: '', year: '' });
-        setIsAddingEducation(false);
-        } catch (error) {
-        setError(`Failed to add education: ${error}`);
-        }
-    };
+        setProfile(editableProfile);
+        setIsEditingProfile(false);
+    } catch (error) {
+        setError(`Failed to update profile: ${error}`);
+    }
+    }
+};
 
-    const handleDeleteEducation = async (id: string) => {
-        try {
-        await databases.deleteDocument('databaseId', 'educationCollectionId', id);
-        setEducation(education.filter((edu) => edu.$id !== id));
-        } catch (error) {
-        setError(`Failed to delete education: ${error}`);
-        }
-    };
+const handleProfileInputChange = (field: keyof Profile, value: string) => {
+    setEditableProfile((prev) => (prev ? { ...prev, [field]: value } : prev));
+};
 
-    const handleAddWorkExperience = async () => {
-        try {
-        const response = await databases.createDocument(
-            'databaseId',
-            'workExperienceCollectionId',
-            'unique()',
-            newWorkExperience
-        );
-        setWorkExperience([...workExperience, { ...newWorkExperience, $id: response.$id }]);
-        setNewWorkExperience({ company: '', position: '', years: '' });
-        setIsAddingWorkExperience(false);
-        } catch (error) {
-            setError(`Failed to add work experience: ${error}`);
-        }
-    };
+const handleAddEducation = async () => {
+    try {
+    const response = await databases.createDocument(
+        '66ee6792001cc251b751',
+        '66f126000029bb8d8f80',
+        'unique()',
+        newEducation
+    );
+    setEducation([...education, { ...newEducation, $id: response.$id }]);
+    setNewEducation({ institution: '', degree: '', year: '' });
+    setIsAddingEducation(false);
+    } catch (error) {
+    setError(`Failed to add education: ${error}`);
+    }
+};
 
-    const handleDeleteWorkExperience = async (id: string) => {
-        try {
-        await databases.deleteDocument('databaseId', 'workExperienceCollectionId', id);
-        setWorkExperience(workExperience.filter((work) => work.$id !== id));
-        } catch (error) {
-            setError(`Failed to delete work experience: ${error}`);
-        }
-    };
+const handleDeleteEducation = async (id: string) => {
+    try {
+    await databases.deleteDocument('66ee6792001cc251b751', '66f126000029bb8d8f80', id);
+    setEducation(education.filter((edu) => edu.$id !== id));
+    } catch (error) {
+    setError(`Failed to delete education: ${error}`);
+    }
+};
 
-    useEffect(() => {
-        if (error) {
-            setShowError(true);
-            const timer = setTimeout(() => setShowError(false), 10000); // Hide after 3 seconds
-            return () => clearTimeout(timer);
-        }
-    }, [error]);
+const handleAddWorkExperience = async () => {
+    try {
+    const response = await databases.createDocument(
+        '66ee6792001cc251b751',
+        '66f126d00004b6ae2947',
+        'unique()',
+        newWorkExperience
+    );
+    setWorkExperience([...workExperience, { ...newWorkExperience, $id: response.$id }]);
+    setNewWorkExperience({ company: '', position: '', years: '' });
+    setIsAddingWorkExperience(false);
+    } catch (error) {
+        setError(`Failed to add work experience: ${error}`);
+    }
+};
 
-    return (
-        <div className="relative min-h-screen bg-signup-bg bg-cover bg-fixed bg-center text-white flex flex-col">
+const handleDeleteWorkExperience = async (id: string) => {
+    try {
+    await databases.deleteDocument('66ee6792001cc251b751', '66f126d00004b6ae2947', id);
+    setWorkExperience(workExperience.filter((work) => work.$id !== id));
+    } catch (error) {
+        setError(`Failed to delete work experience: ${error}`);
+    }
+};
+
+useEffect(() => {
+    if (error) {
+        setShowError(true);
+        const timer = setTimeout(() => setShowError(false), 10000); // Hide after 3 seconds
+        return () => clearTimeout(timer);
+    }
+}, [error]);
+
+return (
+    <div className="relative min-h-screen bg-signup-bg bg-cover bg-fixed bg-center text-white flex flex-col">
         {/* Overlay for contrast */}
         <div className="absolute inset-0 bg-black bg-opacity-95"></div>
 
@@ -283,22 +285,64 @@
                     <p className="text-gray-300 mb-4">{profile.bio}</p>
                     )}
                     {isEditingProfile ? (
-                    <input
-                        type="text"
-                        className="bg-gray-700 text-white rounded px-3 py-1 w-full"
-                        value={editableProfile?.github || ''}
-                        onChange={(e) => handleProfileInputChange('github', e.target.value)}
-                    />
+                        <input
+                            type="text"
+                            className="bg-gray-700 text-white rounded px-3 py-1 w-full"
+                            value={editableProfile?.github.toString() || ''}
+                            onChange={(e) => handleProfileInputChange('github', e.target.value)}
+                        />
                     ) : (
-                    <a
-                        href={profile.github}
-                        target="_blank"
-                        className="text-blue-400 underline"
-                        rel="noopener noreferrer"
-                    >
-                        View GitHub
-                    </a>
+                        profile.github ? (
+                            <a
+                                href={profile.github.toString()}
+                                target="_blank"
+                                className="text-blue-400 underline"
+                                rel="noopener noreferrer"
+                            >
+                                View GitHub
+                            </a>
+                        ) : (
+                            <span className="text-gray-400">No GitHub profile</span>  // Display fallback message
+                        )
                     )}
+                    {/* Adds the website url */}
+                    {isEditingProfile ? (
+                        <input
+                            type="text"
+                            className="bg-gray-700 text-white rounded px-3 py-1 w-full"
+                            value={editableProfile?.website.toString() || ''}
+                            onChange={(e) => handleProfileInputChange('website', e.target.value)}
+                        />
+                    ) : (
+                        profile.website ? (
+                            <a
+                                href={profile.website.toString()}
+                                target="_blank"
+                                className="text-blue-400 underline"
+                                rel="noopener noreferrer"
+                            >
+                                View Website
+                            </a>
+                        ) : (
+                            <span className="text-gray-400">No website</span>  // Display fallback message
+                        )
+                    )}
+                    {/* // Adds the location section */}
+                    {isEditingProfile ? (
+                        <input
+                            type="text"
+                            className="bg-gray-700 text-white rounded px-3 py-1 w-full"
+                            value={editableProfile?.location || ''}
+                            onChange={(e) => handleProfileInputChange('location', e.target.value)}
+                        /> 
+                    ) : (
+                        profile.location ? (
+                            <p className="text-gray-300">{profile.location}</p>
+                        ) : (
+                            <span className="text-gray-400">No location</span>  // Display fallback message
+                        )
+                    )}
+
                 </div>
                 )}
 
@@ -437,6 +481,6 @@
                 <Link href="/privacy" className="text-blue-500 hover:underline">Privacy Policy</Link>
                 </div>
             </footer>
-            </div>
-        );
-        }
+        </div>
+    );
+}
